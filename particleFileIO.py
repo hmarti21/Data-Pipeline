@@ -35,33 +35,3 @@ def readFITSFile(path):
     read=fits.open(path)
     return read[1].data
 
-
-# In[40]:
-
-filepath='/global/cscratch1/sd/sukhdeep/snapdir_194/snapshot_194.'
-col_def=[('Position', ('f8', 3), 'all'), ('Mass','auto',None)]
-fraction=0.05
-num_files=2
-ptype=1
-particleFile(filepath,col_def,fraction,num_files,ptype)
-
-
-# In[41]:
-
-read=fits.open('hmarti21_sampledData.fits')
-
-
-# In[42]:
-
-dat=read[1].data
-
-
-# In[43]:
-
-print(dat['x'])
-
-
-# In[ ]:
-
-
-

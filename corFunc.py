@@ -7,7 +7,6 @@ import numpy as np
 from astropy.table import Table
 import treecorr
 import h5py
-import matplotlib.pyplot as plt
 from astropy.io import ascii
 
 def div0( a, b ):
@@ -66,7 +65,6 @@ def NG(table,rand_pcounts,sightBins,nbins,min_sep,max_sep,rpar_step,fname,tableN
         NG_ksi[i]=div0(NGCor[i].npairs,rand_pcounts[i])
     NG_w=np.sum(NG_ksi,axis=0)
     np.savetxt(fname,NG_w)
-    return NG_w
 
 def NN(table,rand_cat,sightBins,nbins,min_sep,max_sep,rpar_step,fname,table2=None):
     catN=treecorr.Catalog(x=table['x'],y=table['y'],z=table['z'])
@@ -104,7 +102,6 @@ def NN(table,rand_cat,sightBins,nbins,min_sep,max_sep,rpar_step,fname,table2=Non
     xi_tot=np.sum(xi,axis=1)
     varxi_tot=np.sum(varxi,axis=1)
     np.savetxt(fname, np.array([xi_tot,varxi_tot]))
-    return xi_tot,varxi_tot
 
 def RR(table,scale,min_box,max_box,sightBins,nbins,min_sep,max_sep,rpar_step,cat_out=False):
     rand=np.random.uniform(min_box,max_box,size=len(table['x'])*scale*3).reshape(3,len(table['x'])*scale)
@@ -135,27 +132,23 @@ def corFunc(fname1,col_name,cuts,sightBins,rscale,nbins,min_sep,max_sep,rpar_ste
     log.write(fname1)
     if func=='NN' and fname2==None:
         catR=RR(data,rscale,min_box,max_box,sightBins,nbins,min_sep,max_sep,rpar_step,cat_out=True)
-        xi,varxi=NN(data,catR,sightBins,nbins,min_sep,max_sep,rpar_step,savefile)
+        NN(data,catR,sightBins,nbins,min_sep,max_sep,rpar_step,savefile)
         log.close()
-        return xi,varxi
     if func=='NG' and fname2==None:
         data=noPadding(data,'ax')
         rand_pairs=RR(data,rscale,min_box,max_box,sightBins,nbins,min_sep,max_sep,rpar_step)
-        NG_w=NG(data,rand_pairs,sightBins,nbins,min_sep,max_sep,rpar_step,savefile)
+        NG(data,rand_pairs,sightBins,nbins,min_sep,max_sep,rpar_step,savefile)
         log.close()
-        return NG_w
     if fname2!=None:
         log.write('------2ND FILE------')
         data2=read_Data_hdf5(fname2,col_name2,cuts2,key2)
         if func=='NN':
             catR=RR(data,rscale,min_box,max_box,sightBins,nbins,min_sep,max_sep,rpar_step,cat_out=True)
-            xi,varxi=NN(data,rscale,min_box,max_box,sightBins,nbins,min_sep,max_sep,rpar_step,table2=data2)
+            NN(data,rscale,min_box,max_box,sightBins,nbins,min_sep,max_sep,rpar_step,table2=data2)
             log.close()
-            return xi, varxi
         if func=='NG':
             data=noPadding(data,'ax')
             rand_pairs=RR(data,rscale,min_box,max_box,sightBins,nbins,min_sep,max_sep,rpar_step)
-            NG_w=NG(data,rand_pairs,sightBins,nbins,min_sep,max_sep,rpar_step,savefile,tableN=data2)
+            NG(data,rand_pairs,sightBins,nbins,min_sep,max_sep,rpar_step,savefile,tableN=data2)
             log.close()
-            return NG_w
 
