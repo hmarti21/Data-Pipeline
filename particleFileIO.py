@@ -33,5 +33,5 @@ def particleFile(path,col_def,fraction,num_files,ptype):
 
 def readFITSFile(path):
     read=fits.open(path)
-    return read[1].data
+    return table.Table(read[1].data)
 
