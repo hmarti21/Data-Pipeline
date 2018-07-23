@@ -1,0 +1,9 @@
+home_dir="/global/homes/h/hmarti21/"
+logfile="$home_dir""log.txt"
+echo "#####################################" >> $logfile
+echo "begin:" $(date) >> $logfile
+
+python Untitled3.py | cat >> $logfile
+
+echo "end:" $(date) >> $logfile
+
