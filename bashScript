@@ -1,3 +1,4 @@
+
 home_dir="/global/homes/h/hmarti21/"
 logfile="$home_dir""log.txt"
 echo "#####################################" >> $logfile

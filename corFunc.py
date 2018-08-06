@@ -33,6 +33,21 @@ def read_Data_hdf5(filename,col_dict,cuts,key,logfile):
     logwrite.write(str(len(dat)))
     return dat
 
+def read_Data_MyHDF5(filename,col_dict,cuts,key,logfile):
+    full_dat=h5py.File('/global/homes/h/hmarti21/dataFrameTest','r')
+    dat=Table()
+    log=open(logfile,'r').read()
+    logwrite=open(logfile,'w')
+    logwrite.write(log)
+    for i,v, in col_dict.items():
+        if v!=None:
+            dat[i]=full_dat[key]['block0_values'][:,v]
+    cuts=open(cuts)
+    for line in cuts:
+        dat=dat[eval(line)]
+        logwrite.write(line)
+    logwrite.write(str(len(dat)))
+    return dat
 def toMPC(table):
     table['x']=table['x']/1000
     table['y']=table['y']/1000
@@ -143,7 +158,7 @@ def corFunc(fname1,col_name,cuts,sightBins,rscale,nbins,min_sep,max_sep,rpar_min
     reset.write(func)
     reset.write('------1ST FILE------')
     reset.close()
-    data=read_Data_hdf5(fname1,col_name,cuts,key,logfile)
+    data=read_Data_MyHDF5(fname1,col_name,cuts,key,logfile)
     data=toMPC(data)
     rpar_step=rParStepCal(rpar_min,rpar_max,sightBins)
     log_file=open(logfile,'r').read()

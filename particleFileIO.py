@@ -33,85 +33,82 @@ def particleFile(path,col_def,fraction,num_files,ptype):
         data=table.vstack([data,dat_table])
     data.write('hmarti21_sampledData.fits',format='fits',overwrite=True)
 
-def readFITSFile(path,ptype,snapArray):
-    particleTable=table.Table()
-    for i in snapArray:
-        read=fits.open(path+'snapshot_'+'0'+str(i)+'_type'+str(ptype)+'.fits')
-        particleTable=table.vstack([particleTable,table.Table(read[1].data)])
-    return particleTable
+def readFITSFile(path,ptype,snap):
+    read=fits.open(path+'snapshot_'+'0'+str(snap)+'_type'+str(ptype)+'.fits') 
+    return table.Table(read[1].data)
 
 
 # In[4]:
 
 
-filepath='/global/cscratch1/sd/sukhdeep/snapdir_194/snapshot_194.'
-col_def=[('Position', ('f8', 3), 'all'), ('Mass','auto',None)]
-fraction=0.05
-num_files=2
-ptype=1
-particleFile(filepath,col_def,fraction,num_files,ptype)
+#filepath='/global/cscratch1/sd/sukhdeep/snapdir_194/snapshot_194.'
+#col_def=[('Position', ('f8', 3), 'all'), ('Mass','auto',None)]
+#fraction=0.05
+#num_files=2
+#ptype=1
+#particleFile(filepath,col_def,fraction,num_files,ptype)
 
 
 # In[22]:
 
 
-i=0
-file=Gadget1File(filepath+str(i),columndefs=col_def,ptype=ptype)
-arr=file[['Position','Mass']][:]
+#i=0
+#file=Gadget1File(filepath+str(i),columndefs=col_def,ptype=ptype)
+#arr=file[['Position','Mass']][:]
 
 
 # In[24]:
 
 
-len(arr)
+#len(arr)
 
 
 # In[5]:
 
 
-read=fits.open('hmarti21_sampledData.fits')
+#read=fits.open('hmarti21_sampledData.fits')
 
 
 # In[6]:
 
 
-dat=read[1].data
+#dat=read[1].data
 
 
 # In[9]:
 
 
-print(dat)
-dat.dtype
+#print(dat)
+#dat.dtype
 
 
 # In[10]:
 
 
-print(table.Table(dat))
-table.Table(dat).dtype
+#print(table.Table(dat))
+#table.Table(dat).dtype
 
 
 # In[11]:
 
 
-len(table.Table(dat)['z'])
+#len(table.Table(dat)['z'])
 
 
 # In[12]:
 
 
-len(table.Table(dat)['x'])
+#len(table.Table(dat)['x'])
 
 
 # In[13]:
 
 
-len(table.Table(dat)['y'])
+#len(table.Table(dat)['y'])
 
 
 # In[14]:
 
 
-len(table.Table(dat)['mass'])
+#len(table.Table(dat)['mass'])
 
