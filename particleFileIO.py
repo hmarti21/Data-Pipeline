@@ -1,4 +1,5 @@
 
+
 # coding: utf-8
 
 # In[2]:
@@ -35,80 +36,18 @@ def particleFile(path,col_def,fraction,num_files,ptype):
 
 def readFITSFile(path,ptype,snap):
     read=fits.open(path+'snapshot_'+'0'+str(snap)+'_type'+str(ptype)+'.fits') 
-    return table.Table(read[1].data)
+    data=table.Table(read[1].data)
+    #data['W']=np.ones(len(data['x']))
+    return data
 
-
-# In[4]:
-
-
-#filepath='/global/cscratch1/sd/sukhdeep/snapdir_194/snapshot_194.'
-#col_def=[('Position', ('f8', 3), 'all'), ('Mass','auto',None)]
-#fraction=0.05
-#num_files=2
-#ptype=1
-#particleFile(filepath,col_def,fraction,num_files,ptype)
-
-
-# In[22]:
-
-
-#i=0
-#file=Gadget1File(filepath+str(i),columndefs=col_def,ptype=ptype)
-#arr=file[['Position','Mass']][:]
-
-
-# In[24]:
-
-
-#len(arr)
-
-
-# In[5]:
-
-
-#read=fits.open('hmarti21_sampledData.fits')
-
-
-# In[6]:
-
-
-#dat=read[1].data
-
-
-# In[9]:
-
-
-#print(dat)
-#dat.dtype
-
-
-# In[10]:
-
-
-#print(table.Table(dat))
-#table.Table(dat).dtype
-
-
-# In[11]:
-
-
-#len(table.Table(dat)['z'])
-
-
-# In[12]:
-
-
-#len(table.Table(dat)['x'])
-
-
-# In[13]:
-
-
-#len(table.Table(dat)['y'])
-
-
-# In[14]:
-
-
-#len(table.Table(dat)['mass'])
+def combinedParticles(filepath,ptype,snap):
+    particles=table.Table()
+    particles['x']=[]
+    particles['y']=[]
+    particles['z']=[]
+    particles ['mass']=[]
+    for i in ptype:
+        particle=readFITSFile(filepath,i,snap)
+        particles=table.vstack([particles,particle])
+    return particles
 
