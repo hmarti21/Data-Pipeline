@@ -37,6 +37,8 @@ def particleFile(path,col_def,fraction,num_files,ptype):
 def readFITSFile(path,ptype,snap):
     read=fits.open(path+'snapshot_'+'0'+str(snap)+'_type'+str(ptype)+'.fits') 
     data=table.Table(read[1].data)
+    if ptype==1:
+        data['Mass']=np.full(len(data['x']),1.1*10**7)
     #data['W']=np.ones(len(data['x']))
     return data
 
@@ -45,7 +47,7 @@ def combinedParticles(filepath,ptype,snap):
     particles['x']=[]
     particles['y']=[]
     particles['z']=[]
-    particles ['mass']=[]
+    particles['Mass']=[]
     for i in ptype:
         particle=readFITSFile(filepath,i,snap)
         particles=table.vstack([particles,particle])
